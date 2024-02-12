@@ -1,14 +1,23 @@
 {
-  "name": "aws-utils",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "name": "@humodz/aws-utils",
+  "version": "0.1.0",
   "keywords": [],
-  "author": "",
+  "author": "Hugo Dzin",
   "license": "ISC",
+  "description": "Utility commands for interaction with AWS",
+  "files": [
+    "utils.js",
+    "scripts/*.js"
+  ],
+  "bin": {
+    "aws-console": "./scripts/aws-console.js",
+    "aws-refresh": "./scripts/aws-refresh.js",
+    "ssm-del": "./scripts/ssm-del.js",
+    "ssm-get": "./scripts/ssm-get.js",
+    "ssm-list": "./scripts/ssm-list.js",
+    "ssm-put": "./scripts/ssm-put.js",
+    "ssm-putmany": "./scripts/ssm-putmany.js"
+  },
   "dependencies": {
     "@aws-sdk/client-ssm": "^3.509.0",
     "@aws-sdk/credential-providers": "^3.511.0",
