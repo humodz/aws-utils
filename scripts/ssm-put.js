@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const { program, Option } = require('commander');
 const { SSMClient, PutParameterCommand } = require('@aws-sdk/client-ssm');
 

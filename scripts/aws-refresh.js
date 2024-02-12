@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const { fromSSO } = require('@aws-sdk/credential-providers');
 const { program } = require('commander');
 const { run } = require('../utils');

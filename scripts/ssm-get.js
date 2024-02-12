@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const { program } = require('commander');
 const { SSMClient, GetParameterCommand } = require('@aws-sdk/client-ssm');
 

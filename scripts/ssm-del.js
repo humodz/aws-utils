@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const { program } = require('commander');
 const { SSMClient, DeleteParametersCommand } = require('@aws-sdk/client-ssm');
 

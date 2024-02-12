@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const { fromNodeProviderChain } = require('@aws-sdk/credential-providers');
 const { program } = require('commander');
 

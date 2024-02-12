@@ -1,3 +1,3 @@
 # @humodz/aws-utils
 
-Utility commands for interaction with AWS
+Utility commands for interacting with AWS
