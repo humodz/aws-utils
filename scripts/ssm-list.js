@@ -1,7 +1,6 @@
 const { program } = require('commander');
-const { SSMClient, DescribeParametersCommand, GetParametersCommand } = require('@aws-sdk/client-ssm');
-const { paginate } = require('../utils');
-const chunk = require('lodash/chunk');
+const { SSMClient, DescribeParametersCommand } = require('@aws-sdk/client-ssm');
+const { paginate, ssmGetParameters } = require('../utils');
 
 program
     .description('List parameters from AWS SSM.')
@@ -65,26 +64,8 @@ async function ssmListParameters(options) {
         return;
     }
 
-    const GET_PARAMS_MAX_ITEMS = 10;
-    const MAX_CONCURRENT_REQUESTS = 5;
-    const nameChunks = chunk(names, GET_PARAMS_MAX_ITEMS);
-    const requestChunks = chunk(nameChunks, MAX_CONCURRENT_REQUESTS);
-
-    const result = {};
-
-    for (const request of requestChunks) {
-        await Promise.all(request.map(async chunk => {
-            const command = new GetParametersCommand({
-                Names: chunk,
-                WithDecryption: true,
-            });
-            const response = await ssm.send(command);
-
-            response.Parameters.forEach(it => {
-                result[it.Name] = it.Value;
-            })
-        }));
-    }
+    const params = await ssmGetParameters(ssm, names);
+    const result = Object.fromEntries(params.map(p => [p.Name, p.Value]));
 
     console.log(JSON.stringify(result, null, 2));
 }

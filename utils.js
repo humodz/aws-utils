@@ -1,3 +1,5 @@
+const { GetParametersCommand } = require('@aws-sdk/client-ssm');
+const chunk = require('lodash/chunk');
 const cp = require('node:child_process');
 
 async function paginate(commandFn, getItemsFn) {
@@ -37,5 +39,31 @@ function run(command, args, params = {}) {
     });
 }
 
+async function ssmGetParameters(ssm, names) {
+    const GET_PARAMS_MAX_ITEMS = 10;
+    const MAX_CONCURRENT_REQUESTS = 5;
+    const nameChunks = chunk(names, GET_PARAMS_MAX_ITEMS);
+    const requestChunks = chunk(nameChunks, MAX_CONCURRENT_REQUESTS);
 
-module.exports = { paginate, run };
+    const result = [];
+
+    for (const request of requestChunks) {
+        await Promise.all(request.map(async chunk => {
+            const command = new GetParametersCommand({
+                Names: chunk,
+                WithDecryption: true,
+            });
+            const response = await ssm.send(command);
+            result.push(...response.Parameters);
+        }));
+    }
+
+    return result;
+}
+
+
+module.exports = {
+    paginate,
+    run,
+    ssmGetParameters,
+};
